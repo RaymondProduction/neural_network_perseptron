@@ -1,6 +1,8 @@
 # Neural Network Perceptron
 
 Currently, the focus of this project is on developing the graphical user interface (UI) to visualize and interact with a perceptron-based neural network. The UI is designed using Qt Creator, and the project is primarily implemented in Python using PyQt6.
+The UI is being created using [Qt Creator 10.0](https://download.qt.io/archive/qtcreator/10.0/). If you wish to modify the UI, you can download Qt Creator from the provided link.
+
 
 ## Features
 - **Graphical User Interface**: The UI provides an easy and interactive way to work with perceptrons and neural networks.

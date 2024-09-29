@@ -7,28 +7,24 @@ from PyQt6.QtCore import Qt, QPoint
 from mainwindow import Ui_MainWindow
 
 class PaintWidget(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Малювання фігур")
-        self.setGeometry(0, 0, 270, 270)
+    def __init__(self, parent=None):
+        super().__init__(parent)
         self.setMouseTracking(True)
         self.points = []
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
-            print("TEST")
+        if event.button() == Qt.MouseButton.LeftButton:
             self.points = [event.pos()]  # Початок нової фігури
             self.update()
 
     def mouseMoveEvent(self, event):
-        print("MOVE")
-        if event.buttons() & Qt.LeftButton:
+        if event.buttons() & Qt.MouseButton.LeftButton:
             self.points.append(event.pos())  # Додаємо нову точку
             self.update()
 
     def paintEvent(self, event):
         painter = QPainter(self)
-        pen = QPen(Qt.black, 2, Qt.SolidLine)
+        pen = QPen(Qt.GlobalColor.black, 2, Qt.PenStyle.SolidLine)
         painter.setPen(pen)
 
         if len(self.points) > 1:
@@ -39,8 +35,16 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
-        self.ui.widget = PaintWidget()
         self.ui.setupUi(self)
+        
+        # Замінюємо звичайний віджет на PaintWidget
+        self.paint_widget = PaintWidget(self.ui.centralwidget)
+        self.paint_widget.setGeometry(self.ui.widget.geometry())
+        self.paint_widget.setObjectName("paint_widget")
+
+        # Видаляємо попередній простий віджет
+        self.ui.widget.deleteLater()
+        self.ui.widget = self.paint_widget
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
