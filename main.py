@@ -4,7 +4,11 @@ from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow
 from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QPoint
 
+from calc import MatrixManipulation
+
 from mainwindow import Ui_MainWindow
+
+matrixManipulator = MatrixManipulation()
 
 class PaintWidget(QWidget):
     def __init__(self, parent=None):
@@ -16,11 +20,15 @@ class PaintWidget(QWidget):
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             self.current_points = [event.pos()]  # Початок нової фігури
+            # print(" mousePressEvent > ", event.pos())
             self.update()
 
     def mouseMoveEvent(self, event):
         if event.buttons() & Qt.MouseButton.LeftButton:
             self.current_points.append(event.pos())  # Додаємо нову точку до поточної фігури
+            print(" mouseMoveEvent > ", event.pos().x())
+            matrixManipulator.put_val(event.pos(), 5)
+            matrixManipulator.show()
             self.update()
 
     def mouseReleaseEvent(self, event):
@@ -49,6 +57,8 @@ class PaintWidget(QWidget):
             for i in range(len(self.current_points) - 1):
                 painter.drawLine(self.current_points[i], self.current_points[i + 1])
 
+    # def setGeometry(self, geometry):
+    #     super().setGeometry(geometry)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -61,10 +71,19 @@ class MainWindow(QMainWindow):
         self.paint_widget.setGeometry(self.ui.widget.geometry())
         self.paint_widget.setObjectName("paint_widget")
 
+
         # Видаляємо попередній простий віджет
         self.ui.widget.deleteLater()
         self.ui.widget = self.paint_widget
 
+        matrixManipulator.set_geometry(self.ui.widget.geometry())
+        matrixManipulator.create(lambda : 0)
+        matrixManipulator.show()
+
+
+        self.ui.clearButton.clicked.connect(lambda:
+                                            matrixManipulator.create(lambda : 0)
+                                            )
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
