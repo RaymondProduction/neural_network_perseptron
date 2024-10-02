@@ -27,7 +27,7 @@ class PaintWidget(QWidget):
         if event.buttons() & Qt.MouseButton.LeftButton:
             self.current_points.append(event.pos())  # Додаємо нову точку до поточної фігури
             print(" mouseMoveEvent > ", event.pos().x())
-            matrixManipulator.put_val(event.pos(), 5)
+            matrixManipulator.put_val(event.pos(), 1)
             matrixManipulator.show()
             self.update()
 
@@ -81,9 +81,20 @@ class MainWindow(QMainWindow):
         matrixManipulator.show()
 
 
-        self.ui.clearButton.clicked.connect(lambda:
-                                            matrixManipulator.create(lambda : 0)
-                                            )
+        self.ui.clearButton.clicked.connect(self.clear_all)
+        self.ui.alignButton.clicked.connect(self.align)
+
+    def clear_all(self):
+        # Очищаємо всі фігури і матрицю
+        self.paint_widget.figures = []
+        self.paint_widget.current_points = []
+        matrixManipulator.create(lambda: 0)
+        self.paint_widget.update()  # Оновлюємо віджет для очищення екрана
+
+    def align(self):
+        matrixManipulator.align()
+        matrixManipulator.show()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
