@@ -20,15 +20,12 @@ class PaintWidget(QWidget):
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             self.current_points = [event.pos()]  # Початок нової фігури
-            # print(" mousePressEvent > ", event.pos())
             self.update()
 
     def mouseMoveEvent(self, event):
         if event.buttons() & Qt.MouseButton.LeftButton:
             self.current_points.append(event.pos())  # Додаємо нову точку до поточної фігури
-            print(" mouseMoveEvent > ", event.pos().x())
             matrixManipulator.put_val(event.pos(), 1)
-            matrixManipulator.show()
             self.update()
 
     def mouseReleaseEvent(self, event):
@@ -57,6 +54,25 @@ class PaintWidget(QWidget):
             for i in range(len(self.current_points) - 1):
                 painter.drawLine(self.current_points[i], self.current_points[i + 1])
 
+    def draw_from_matrix(self, matrix):
+        # Очищаємо фігури перед малюванням нових
+        self.figures = []
+
+        cell_width = self.width() // 20
+        cell_height = self.height() // 20
+
+        # Створюємо фігури на основі даних у матриці
+        for i in range(20):
+            for j in range(20):
+                if matrix[i][j] == 1:
+                    x = i * cell_width
+                    y = j * cell_height
+                    # Малюємо невеликий квадрат на основі матриці
+                    self.figures.append([QPoint(x, y), QPoint(x + cell_width, y + cell_height)])
+
+        # Оновлюємо віджет для відображення змін
+        self.update()
+
     # def setGeometry(self, geometry):
     #     super().setGeometry(geometry)
 
@@ -71,15 +87,13 @@ class MainWindow(QMainWindow):
         self.paint_widget.setGeometry(self.ui.widget.geometry())
         self.paint_widget.setObjectName("paint_widget")
 
-
         # Видаляємо попередній простий віджет
         self.ui.widget.deleteLater()
         self.ui.widget = self.paint_widget
 
         matrixManipulator.set_geometry(self.ui.widget.geometry())
-        matrixManipulator.create(lambda : 0)
+        matrixManipulator.create(lambda: 0)
         matrixManipulator.show()
-
 
         self.ui.clearButton.clicked.connect(self.clear_all)
         self.ui.alignButton.clicked.connect(self.align)
@@ -92,9 +106,9 @@ class MainWindow(QMainWindow):
         self.paint_widget.update()  # Оновлюємо віджет для очищення екрана
 
     def align(self):
+        # Вирівнюємо матрицю і оновлюємо зображення відповідно до нових даних
         matrixManipulator.align()
-        matrixManipulator.show()
-
+        self.paint_widget.draw_from_matrix(matrixManipulator.matrix)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
