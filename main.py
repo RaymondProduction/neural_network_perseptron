@@ -68,7 +68,7 @@ class PaintWidget(QWidget):
                     x = i * cell_width
                     y = j * cell_height
                     # Малюємо невеликий квадрат на основі матриці
-                    self.figures.append([QPoint(x, y), QPoint(x + cell_width, y + cell_height)])
+                    self.figures.append([QPoint(x, y),QPoint(x + cell_width, y), QPoint(x + cell_width, y + cell_height),  QPoint(x, y + cell_height), QPoint(x, y)])
 
         # Оновлюємо віджет для відображення змін
         self.update()
