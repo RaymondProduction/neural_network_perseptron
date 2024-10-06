@@ -1,4 +1,7 @@
 import sys
+from mailbox import Babyl
+from time import sleep
+
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow
 from PyQt6.QtGui import QPainter, QPen
@@ -6,7 +9,10 @@ from PyQt6.QtCore import Qt, QPoint
 
 from calc import MatrixManipulation
 
+from brain import Brain
 from mainwindow import Ui_MainWindow
+
+brain2 = Brain()
 
 matrixManipulator = MatrixManipulation()
 
@@ -91,12 +97,15 @@ class MainWindow(QMainWindow):
         self.ui.widget.deleteLater()
         self.ui.widget = self.paint_widget
 
+        brain2.random_weights()
+
         matrixManipulator.set_geometry(self.ui.widget.geometry())
         matrixManipulator.create(lambda: 0)
         matrixManipulator.show()
 
         self.ui.clearButton.clicked.connect(self.clear_all)
         self.ui.alignButton.clicked.connect(self.align)
+        self.ui.checkButton.clicked.connect(self.run_brain)
 
     def clear_all(self):
         # Очищаємо всі фігури і матрицю
@@ -109,6 +118,10 @@ class MainWindow(QMainWindow):
         # Вирівнюємо матрицю і оновлюємо зображення відповідно до нових даних
         matrixManipulator.align()
         self.paint_widget.draw_from_matrix(matrixManipulator.matrix)
+
+    def run_brain(self):
+        self.align()
+        brain2.perseptron(matrixManipulator.matrix)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
