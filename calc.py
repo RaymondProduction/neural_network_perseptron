@@ -1,25 +1,26 @@
 
 class MatrixManipulation:
-    def __init__(self):
+    def __init__(self, size):
         self.matrix = []
         self.width_px = None
         self.height_px = None
+        self.size = size
 
     def align(self):
         tmp = []
-        for i in range(20):
+        for i in range(self.size):
             row = []
-            for j in range(20):
+            for j in range(self.size):
                 row.append(0)
             tmp.append(row)
 
-        x_min = 20
+        x_min = self.size
         x_max = -1
-        y_min = 20
+        y_min = self.size
         y_max = -1
 
-        for i in range(20):
-            for j in range(20):
+        for i in range(self.size):
+            for j in range(self.size):
                 if self.matrix[i][j] == 1:
                     if i < x_min:
                         x_min = i
@@ -32,39 +33,39 @@ class MatrixManipulation:
 
         print(f"x_min={x_min} x_max = {x_max}")
 
-        for i in range(20):
-            for j in range(20):
-                xx = i/20 * (x_max - x_min +1)
-                yy = j/20 * (y_max - y_min +1)
+        for i in range(self.size):
+            for j in range(self.size):
+                xx = i/self.size * (x_max - x_min +1)
+                yy = j/self.size * (y_max - y_min +1)
                 tmp[i][j] = self.matrix[x_min + int(xx)][y_min + int(yy)]
 
-        for i in range(20):
-            for j in range(20):
+        for i in range(self.size):
+            for j in range(self.size):
                 self.matrix[i][j] = tmp[i][j]
 
     def create(self, fill_value):
         self.matrix = []
-        for i in range(20):
+        for i in range(self.size):
             row = []
-            for j in range(20):
+            for j in range(self.size):
                 row.append(fill_value())
             self.matrix.append(row)
 
         return self
 
     def clear(self, matrix):
-        for i in range(20):
-            for j in range(20):
+        for i in range(self.size):
+            for j in range(self.size):
                 self.matrix[j][i] = 0
         return  self
 
     def put_val(self, pos, value):
         x = pos.x()
         y = pos.y()
-        i = x * 20 // self.width_px
-        j = y * 20 // self.height_px
+        i = x * self.size // self.width_px
+        j = y * self.size // self.height_px
 
-        if 0 <= i < 20 and 0 <= j < 20:
+        if 0 <= i < self.size and 0 <= j < self.size:
             self.matrix[i][j] = value
 
         return self

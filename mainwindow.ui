@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>420</width>
-    <height>340</height>
+    <width>390</width>
+    <height>306</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>0</y>
-      <width>270</width>
-      <height>270</height>
+      <width>260</width>
+      <height>260</height>
      </rect>
     </property>
     <property name="mouseTracking">
@@ -34,10 +34,10 @@
 background-color: white;</string>
     </property>
    </widget>
-    <widget class="QPushButton" name="clearButton">
+   <widget class="QPushButton" name="clearButton">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>280</x>
       <y>10</y>
       <width>100</width>
       <height>30</height>
@@ -50,7 +50,7 @@ background-color: white;</string>
    <widget class="QPushButton" name="checkButton">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>280</x>
       <y>50</y>
       <width>100</width>
       <height>30</height>
@@ -63,7 +63,7 @@ background-color: white;</string>
    <widget class="QPushButton" name="alignButton">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>280</x>
       <y>90</y>
       <width>100</width>
       <height>30</height>
@@ -76,7 +76,7 @@ background-color: white;</string>
    <widget class="QPushButton" name="forgetButton">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>280</x>
       <y>130</y>
       <width>100</width>
       <height>30</height>
@@ -92,8 +92,8 @@ background-color: white;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>420</width>
-     <height>33</height>
+     <width>390</width>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

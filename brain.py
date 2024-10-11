@@ -4,24 +4,25 @@ from PyQt6.QtWidgets import QMessageBox
 
 
 class Brain:
-    def __init__(self):
+    def __init__(self, square_size):
+        self.square_size = square_size
         self.weights = []
         self.random_weights()
         self.speed = 0.7
 
     def perseptron(self, matrix):
-        sum = 0 # вхід персептрона
+        total_sum = 0 # вхід персептрона
         #rety = None # зенайдений вихід персептрона
         #test = None # напрямок корегування ваг
 
         print("matrix ", matrix)
         print("weights ", self.weights)
 
-        for i in range(20):
-            for j in range(20):
-                sum+=matrix[i][j]*self.weights[i][j]
+        for i in range(self.square_size):
+            for j in range(self.square_size):
+                total_sum+= matrix[i][j] * self.weights[i][j]
 
-        if sum > 0:
+        if total_sum > 0:
             rety = 1
         else:
             rety = 0
@@ -46,15 +47,24 @@ class Brain:
                 test = 1
             else:
                 test = -1
-            for i in range(20):
-                for j in range(20):
+            for i in range(self.square_size):
+                for j in range(self.square_size):
                     self.weights[i][j] = self.weights[i][j] + self.speed*test*matrix[i][j]
 
     def random_weights(self):
-        for i in range(20):
+        for i in range(self.square_size):
             row = []
-            for j in range(20):
+            for j in range(self.square_size):
                 row.append((-3 + random.randint(0, 5)) / 10.0)
             self.weights.append(row)
+
+
+    def save_weights(self):
+        with open("weights.dat", "w") as file:
+            for j in range(self.square_size):
+                for i in range(self.square_size):
+                    file.write(f"{self.weights[i][j]}\t")  # Записуємо вагу з табуляцією
+                file.write("\n")  # Новий рядок після кожного рядка ваг
+
 
 

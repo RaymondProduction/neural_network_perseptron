@@ -1,6 +1,4 @@
 import sys
-from mailbox import Babyl
-from time import sleep
 
 from PyQt6 import QtWidgets, QtCore
 from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow
@@ -12,9 +10,11 @@ from calc import MatrixManipulation
 from brain import Brain
 from mainwindow import Ui_MainWindow
 
-brain2 = Brain()
+SQUARE_SIZE = 20
 
-matrixManipulator = MatrixManipulation()
+brain2 = Brain(SQUARE_SIZE)
+
+matrixManipulator = MatrixManipulation(SQUARE_SIZE)
 
 class PaintWidget(QWidget):
     def __init__(self, parent=None):
@@ -64,12 +64,12 @@ class PaintWidget(QWidget):
         # Очищаємо фігури перед малюванням нових
         self.figures = []
 
-        cell_width = self.width() // 20
-        cell_height = self.height() // 20
+        cell_width = self.width() // SQUARE_SIZE
+        cell_height = self.height() // SQUARE_SIZE
 
         # Створюємо фігури на основі даних у матриці
-        for i in range(20):
-            for j in range(20):
+        for i in range(SQUARE_SIZE):
+            for j in range(SQUARE_SIZE):
                 if matrix[i][j] == 1:
                     x = i * cell_width
                     y = j * cell_height
@@ -106,6 +106,7 @@ class MainWindow(QMainWindow):
         self.ui.clearButton.clicked.connect(self.clear_all)
         self.ui.alignButton.clicked.connect(self.align)
         self.ui.checkButton.clicked.connect(self.run_brain)
+        self.ui.actionSave_weights.triggered.connect(self.save_knowledge_brain)
 
     def clear_all(self):
         # Очищаємо всі фігури і матрицю
@@ -122,6 +123,10 @@ class MainWindow(QMainWindow):
     def run_brain(self):
         self.align()
         brain2.perseptron(matrixManipulator.matrix)
+
+    def save_knowledge_brain(self):
+        brain2.save_weights()
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
