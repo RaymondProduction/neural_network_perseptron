@@ -10,7 +10,14 @@ class Brain:
         self.random_weights()
         self.speed = 0.7
 
-    def perseptron(self, matrix):
+    def load_weights(self, file_path):
+        with open(file_path, "r") as file:
+            for j, line in enumerate(file):
+                values = line.strip().split("\t")
+                for i in range(min(self.square_size, len(values))):
+                    self.weights[i][j] = float(values[i])
+
+    def perceptron(self, matrix):
         total_sum = 0 # вхід персептрона
         #rety = None # зенайдений вихід персептрона
         #test = None # напрямок корегування ваг

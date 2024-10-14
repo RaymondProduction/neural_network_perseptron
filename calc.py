@@ -1,3 +1,5 @@
+import os
+
 
 class MatrixManipulation:
     def __init__(self, size):
@@ -59,6 +61,14 @@ class MatrixManipulation:
                 self.matrix[j][i] = 0
         return  self
 
+    @staticmethod
+    def clear_console():
+        # Перевіряємо, на якій платформі виконується код
+        if os.name == 'nt':  # Якщо Windows
+            os.system('cls')
+        else:  # Якщо Linux або MacOS
+            os.system('clear')
+
     def put_val(self, pos, value):
         x = pos.x()
         y = pos.y()
@@ -75,5 +85,6 @@ class MatrixManipulation:
         self.height_px = geometry.height()
 
     def show(self):
+        self.clear_console()
         for row in self.matrix:
-            print(row)
+            print(row, sep="\n")

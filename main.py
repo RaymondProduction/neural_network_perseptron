@@ -1,7 +1,7 @@
 import sys
 
 from PyQt6 import QtWidgets, QtCore
-from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow
+from PyQt6.QtWidgets import QApplication, QWidget, QMainWindow, QFileDialog
 from PyQt6.QtGui import QPainter, QPen
 from PyQt6.QtCore import Qt, QPoint
 
@@ -107,6 +107,7 @@ class MainWindow(QMainWindow):
         self.ui.alignButton.clicked.connect(self.align)
         self.ui.checkButton.clicked.connect(self.run_brain)
         self.ui.actionSave_weights.triggered.connect(self.save_knowledge_brain)
+        self.ui.actionLoad_weights.triggered.connect(self.load_knowledge_brain)
 
     def clear_all(self):
         # Очищаємо всі фігури і матрицю
@@ -122,10 +123,21 @@ class MainWindow(QMainWindow):
 
     def run_brain(self):
         self.align()
-        brain2.perseptron(matrixManipulator.matrix)
+        brain2.perceptron(matrixManipulator.matrix)
 
-    def save_knowledge_brain(self):
+    @staticmethod
+    def save_knowledge_brain():
         brain2.save_weights()
+        matrixManipulator.show()
+
+    def load_knowledge_brain(self):
+        # Відкриваємо діалог вибору файлу
+        file_path, _ = QFileDialog.getOpenFileName(self, "Open Weights File", "", "Data Files (*.dat)")
+
+        if file_path:
+            # Завантажуємо ваги з файлу
+            brain2.load_weights(file_path)
+            matrixManipulator.show()
 
 
 if __name__ == "__main__":
